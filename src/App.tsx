@@ -1,17 +1,24 @@
 //`https://pokeapi.co/api/v2/pokemon/${randomId}`
 //{pokemon.sprites.front_default}
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
+
+interface Pokemon {
+  name: string;
+  sprites: {
+    front_default: string;
+  };
+}
 
 function App() {
-  const [pokemon, setPokemon] = useState(null)
-  const [errorMessage, setErrorMessage] = useState(null)
+  const [pokemon, setPokemon] = useState<Pokemon | null>(null)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const fetchRandomPokemon = () => {
+  const fetchRandomPokemon = (): void => {
     const randomId = Math.floor(Math.random() * 151) + 1
     fetch(`https://pokeapi.co/api/v2/pokemon/${randomId}`)
       .then((res) => {
         if (!res.ok) {
-          throw new Error("HTTPエラ-:" + res.error);
+          throw new Error("HTTPエラ-:" + res.text);
         }
         return res.json()
       })
